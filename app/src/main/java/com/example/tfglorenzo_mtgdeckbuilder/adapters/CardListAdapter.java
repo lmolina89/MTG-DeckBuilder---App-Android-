@@ -17,7 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tfglorenzo_mtgdeckbuilder.R;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
+import com.example.tfglorenzo_mtgdeckbuilder.fragments.dialogFragments.DeleteDialogFragment;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceDeckCardList;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceOnCardClick;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceUpdateCards;
+import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.UpdateNumCardsData;
+import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseUpdateNumCards;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Card;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Deck;
 
@@ -40,15 +47,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     private FragmentManager parenFragmentManager;
     private SharedPreferences preferences;
     private String token;
-
-    private final String URL = "http://10.0.2.2:80/api-users/endp/";
     private int i;
     private int deckId;
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private DockerLampApi dockerLampApi = retrofit.create(DockerLampApi.class);
+    private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
+    private final DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
 
 
     // Create a static inner class and provide references to all the Views for each data item.
@@ -95,7 +97,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         // Create a LayoutInflater object
         LayoutInflater inflater = LayoutInflater.from(context);
         // Inflate the custom layout
-        View view = inflater.inflate(R.layout.custom_element_card_list, parent, false);
+        View view = inflater.inflate(R.layout.element_card_list, parent, false);
         viewHolder = new ViewHolder(view);
         listenerCardList = (InterfaceDeckCardList) context;
 
@@ -114,7 +116,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
                 numCards++;
                 card.setNumCards(numCards);
             }
-            cardList.set(i,card);
+            cardList.set(i, card);
             notifyItemChanged(i);
         });
 
@@ -195,7 +197,4 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             }
         });
     }
-
-
-
 }

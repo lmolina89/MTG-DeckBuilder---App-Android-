@@ -1,6 +1,6 @@
 package com.example.tfglorenzo_mtgdeckbuilder.models.api;
 
-import com.example.proyectoconmenu.models.singleCardInfo.SingleCardInfo;
+import com.example.tfglorenzo_mtgdeckbuilder.models.singleCardInfo.SingleCardInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

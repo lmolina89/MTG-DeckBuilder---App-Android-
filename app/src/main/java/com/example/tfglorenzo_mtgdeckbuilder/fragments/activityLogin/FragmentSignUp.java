@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tfglorenzo_mtgdeckbuilder.R;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceLogin;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.RegisterData;
@@ -24,15 +25,13 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FragmentSignUp extends Fragment {
     private Button btnBack, btnCreate;
     private EditText txtNick, txtEmail, txtPass;
     private TextView txtErrorSign;
     private InterfaceLogin listenerLogin;
-    private final String URL = "http://10.0.2.2:80/api-users/endp/";
+    private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
 
     public FragmentSignUp() {
         // Required empty public constructor
@@ -41,6 +40,7 @@ public class FragmentSignUp extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
     }
 
     @Override
@@ -84,11 +84,7 @@ public class FragmentSignUp extends Fragment {
                 "",
                 "{}");
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        DockerLampApi dockerLampApi = retrofit.create(DockerLampApi.class);
+        DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
         String nick = txtNick.getText().toString();
         String email = txtEmail.getText().toString();
         String pass = txtPass.getText().toString();
@@ -112,21 +108,25 @@ public class FragmentSignUp extends Fragment {
             @Override
             public void onResponse(Call<ResponseRegister> call, Response<ResponseRegister> response) {
                 ResponseRegister responseRegister = response.body();
-                if (response.errorBody() != null) {
-                    try {
-                        System.out.println(response.errorBody().string());
-                    } catch (IOException | NullPointerException e) {
-                        throw new RuntimeException(e);
-                    }
-                    System.out.println(call.request());
-                }
+//                if (response.errorBody() != null) {
+//                    try {
+//                        System.out.println(response.errorBody().string());
+//                    } catch (IOException | NullPointerException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    System.out.println(call.request());
+//                }
                 if (responseRegister.getResult().equals("ok") && responseRegister.getInsertId() != 0) {
                     listenerLogin.backToLogin();
                     Toast.makeText(getContext(), "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
-                } else if (responseRegister.getInsertId() == 0) {
+                }
+                if (responseRegister.getInsertId() == 0) {
                     txtErrorSign.setText("El email ya existe");
                 }
-                txtErrorSign.setText("Ha ocurrido algun problema");
+                if(responseRegister.getResult().equals("error")){
+                    txtErrorSign.setText("Ha ocurrido algun problema");
+                }
+
             }
 
             @Override

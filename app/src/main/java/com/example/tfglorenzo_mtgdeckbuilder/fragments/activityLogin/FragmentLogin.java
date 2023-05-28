@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.tfglorenzo_mtgdeckbuilder.R;
 import com.example.tfglorenzo_mtgdeckbuilder.UserActivity;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.databinding.FragmentLoginBinding;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceLogin;
@@ -28,9 +29,6 @@ import com.example.tfglorenzo_mtgdeckbuilder.models.userData.UsersList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class FragmentLogin extends Fragment {
     private EditText txtEmail, txtPass;
@@ -38,10 +36,11 @@ public class FragmentLogin extends Fragment {
     private Button btnSubmit;
     private InterfaceLogin listenerLogin;
     private FragmentLoginBinding fragmentLoginBinding;
+    private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
+    DockerLampApi dockerLampApi;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private UsersList userList = new UsersList();
-    private final String URL = "http://10.0.2.2:80/api-users/endp/";
 
     public FragmentLogin() {
         // Required empty public constructor
@@ -51,6 +50,8 @@ public class FragmentLogin extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = getActivity().getSharedPreferences(getString(R.string.userPreferences), Context.MODE_PRIVATE);
+        conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
+        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
     }
 
     @Override
@@ -62,11 +63,8 @@ public class FragmentLogin extends Fragment {
         txtError = fragmentLoginBinding.txtErrorlog;
         txtSignup = fragmentLoginBinding.txtSignUp;
 
-//        txtPass.setText("lmolina");
-//        txtEmail.setText("lmolinamoreno@hotmail.com");
-
-//        txtPass.setText("admin");
-//        txtEmail.setText("admin@admin.com");
+        txtPass.setText("lmolina");
+        txtEmail.setText("lmolinamoreno@hotmail.com");
 
         if (txtEmail.getText().toString().equals("") && txtPass.getText().toString().equals("")) {
             txtEmail.setText(preferences.getString(getString(R.string.preferences_email), null));
@@ -99,11 +97,6 @@ public class FragmentLogin extends Fragment {
 
     public void loginAuth(String email, String pass) {
         LoginData loginData = new LoginData(email, pass);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        DockerLampApi dockerLampApi = retrofit.create(DockerLampApi.class);
 
         Call<ResponseAuth> call = dockerLampApi.userAuth(loginData);
 
@@ -111,6 +104,7 @@ public class FragmentLogin extends Fragment {
             @Override
             public void onResponse(Call<ResponseAuth> call, Response<ResponseAuth> response) {
                 String apikey;
+
                 if (response.isSuccessful() && response.body() != null) {
                     ResponseAuth auth = response.body();
 
@@ -138,6 +132,7 @@ public class FragmentLogin extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseAuth> call, Throwable t) {
+                System.out.println(call.request());
                 Toast.makeText(getContext(), "No se ha podido hacer la autenticacion", Toast.LENGTH_SHORT).show();
                 System.out.println(t.getLocalizedMessage());
                 t.getCause();

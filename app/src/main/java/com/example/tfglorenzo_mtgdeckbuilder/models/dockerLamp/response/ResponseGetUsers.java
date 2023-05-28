@@ -1,6 +1,6 @@
 package com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response;
 
-import com.example.proyectoconmenu.models.userData.User;
+import com.example.tfglorenzo_mtgdeckbuilder.models.userData.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

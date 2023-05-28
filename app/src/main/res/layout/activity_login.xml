@@ -23,9 +23,13 @@
         android:layout_gravity="center|top"
         android:layout_marginTop="110dp"
         android:fontFamily="@font/belerenbold"
+        android:shadowColor="#030357"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="20"
         android:text="@string/txtLogoLogin"
         android:textAlignment="center"
-        android:textColor="#E40E0E"
+        android:textColor="#AC1717"
         android:textSize="45sp"
         android:textStyle="bold" />
 

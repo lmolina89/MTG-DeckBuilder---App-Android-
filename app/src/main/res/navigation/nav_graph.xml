@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FragmentDecks">
+
+    <fragment
+        android:id="@+id/FragmentDecks"
+        android:name="com.example.tfglorenzo_mtgdeckbuilder.fragments.activityUser.FragmentDecks"
+        android:label="Lista de mazos"
+        tools:layout="@layout/fragment_decks">
+        <action
+            android:id="@+id/action_FragmentDecks_to_FragmentList"
+            app:destination="@id/FragmentCardList" />
+        <action
+            android:id="@+id/action_FragmentDecks_to_newDeckDialogFragment"
+            app:destination="@id/NewDeckDialogFragment" />
+
+        <action
+            android:id="@+id/action_FragmentDecks_to_editDeckDialogFragment"
+            app:destination="@id/editDeckDialogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentCardList"
+        android:name="com.example.tfglorenzo_mtgdeckbuilder.fragments.activityUser.FragmentCardList"
+        android:label="Lista de cartas"
+        tools:layout="@layout/fragment_card_list">
+        <action
+            android:id="@+id/action_FragmentList_to_FragmentSearch"
+            app:destination="@id/FragmentSearch" />
+        <action
+            android:id="@+id/action_FragmentList_to_FragmentDecks"
+            app:destination="@id/FragmentDecks" />
+        <action
+            android:id="@+id/action_FragmentList_to_fragmentCardInfo"
+            app:destination="@id/fragmentCardInfo" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentSearch"
+        android:name="com.example.tfglorenzo_mtgdeckbuilder.fragments.activityUser.FragmentSearch"
+        android:label="Buscar cartas"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_FragmentSearch_to_FragmentList"
+            app:destination="@id/FragmentCardList" />
+        <action
+            android:id="@+id/action_FragmentSearch_to_fragmentCardInfo"
+            app:destination="@id/fragmentCardInfo" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentCardInfo"
+        android:name="com.example.tfglorenzo_mtgdeckbuilder.fragments.activityUser.FragmentCardDetails"
+        android:label="Informacion"
+        tools:layout="@layout/fragment_card_details">
+        <action
+            android:id="@+id/action_fragmentCardInfo_to_FragmentSearch"
+            app:destination="@id/FragmentSearch" />
+        <action
+            android:id="@+id/action_fragmentCardInfo_to_FragmentList"
+            app:destination="@id/FragmentCardList" />
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/editDeckDialogFragment"
+        android:name="com.example.tfglorenzo_mtgdeckbuilder.fragments.dialogFragments.EditDialogFragment"
+        android:label="Editar mazo">
+        <action
+            android:id="@+id/action_editDeckDialogFragment_to_FragmentDecks"
+            app:destination="@id/FragmentDecks" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/NewDeckDialogFragment"
+        android:name="com.example.tfglorenzo_mtgdeckbuilder.fragments.dialogFragments.NewDeckDialogFragment"
+        android:label="Crear nuevo mazo">
+        <action
+            android:id="@+id/action_newDeckDialogFragment_to_FragmentDecks"
+            app:destination="@id/FragmentDecks" />
+    </dialog>
+</navigation>

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.tfglorenzo_mtgdeckbuilder.UserActivity">
+
+    <item
+        android:id="@+id/save_data"
+        android:orderInCategory="100"
+        android:title="Guardar datos"
+        android:icon="@drawable/ic_baseline_save_24"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sign_out"
+        android:orderInCategory="400"
+        android:title="Cerrar sesion"
+
+        app:showAsAction="never" />
+</menu>

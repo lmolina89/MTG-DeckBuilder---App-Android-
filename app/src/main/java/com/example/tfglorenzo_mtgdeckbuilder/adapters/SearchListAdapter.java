@@ -17,12 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tfglorenzo_mtgdeckbuilder.R;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceDeckCardList;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceOnCardClick;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.InsertCardData;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseInsertCard;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Card;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Deck;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,14 +43,9 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
     private int i;
     private SharedPreferences preferences;
     private String token;
-
-    private final String URL = "http://10.0.2.2:80/api-users/endp/";
     private int deckId;
-    private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private final DockerLampApi dockerLampApi = retrofit.create(DockerLampApi.class);
+    private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
+    private final DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +77,7 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
         preferences = context.getSharedPreferences(context.getString(R.string.userPreferences), Context.MODE_PRIVATE);
         token = preferences.getString(context.getString(R.string.preferences_apikey), null);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.custom_element_search_list, parent, false);
+        View view = inflater.inflate(R.layout.element_search_list, parent, false);
         viewHolder = new ViewHolder(view);
 
         viewHolder.btnAddCard.setOnClickListener(view1 -> {
@@ -140,14 +139,14 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
             @Override
             public void onResponse(Call<ResponseInsertCard> call, Response<ResponseInsertCard> response) {
                 ResponseInsertCard responseInsertCard = response.body();
-//                if (response.errorBody() != null){
-//                    try {
-//                        System.out.println(response.errorBody().string());
-//                    } catch (IOException | NullPointerException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-
+                if (response.errorBody() != null){
+                    try {
+                        System.out.println(response.errorBody().string());
+                    } catch (IOException | NullPointerException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                System.out.println(response);
                 if (response.isSuccessful() && response.body() != null) {
                     if (responseInsertCard.getResult().equals("ok")) {
                         Toast.makeText(context, "Carta añadida correctamente", Toast.LENGTH_SHORT).show();

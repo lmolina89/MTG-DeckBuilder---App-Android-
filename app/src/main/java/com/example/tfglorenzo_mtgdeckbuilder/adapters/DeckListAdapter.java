@@ -16,6 +16,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tfglorenzo_mtgdeckbuilder.R;
+import com.example.tfglorenzo_mtgdeckbuilder.fragments.dialogFragments.DeleteDialogFragment;
+import com.example.tfglorenzo_mtgdeckbuilder.fragments.dialogFragments.EditDialogFragment;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceDeckCardList;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceOnDeckClick;
+import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceUpdateDecks;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Deck;
 
 import java.util.List;
@@ -73,11 +79,11 @@ public class DeckListAdapter  extends RecyclerView.Adapter<DeckListAdapter.ViewH
         // Create a LayoutInflater object
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         // Inflate the custom layout
-        View view = inflater.inflate(R.layout.custom_element_deck_list, parent, false);
+        View view = inflater.inflate(R.layout.element_deck_list, parent, false);
         viewHolder = new ViewHolder(view);
         listenerCardList = (InterfaceDeckCardList) context;
         view.setOnClickListener(v -> {
-            TextView rowName = v.findViewById(R.id.txt_cardName);
+//            TextView rowName = v.findViewById(R.id.txt_cardName);
             i = viewHolder.getAdapterPosition();
             Toast.makeText(context, "Mazo seleccionado: " + deckList.get(i).getName(), Toast.LENGTH_SHORT).show();
             listenerDeckClick.onClick(deckList.get(i));
