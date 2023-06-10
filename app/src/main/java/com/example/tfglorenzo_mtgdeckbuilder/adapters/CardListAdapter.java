@@ -33,11 +33,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHolder> implements InterfaceUpdateCards {
-    // Declare variables to store data from the constructor
     private final Context context;
     private Deck selectedDeck;
     private List<Card> cardList;
@@ -52,16 +49,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
     private final DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
 
-
-    // Create a static inner class and provide references to all the Views for each data item.
-    // This is particularly useful for caching the Views within the item layout for fast access.
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Declare member variables for all the Views in a row
         TextView cardName, cardCost, txtNumberCopies;
         ImageView cardMini;
         ImageButton btnDelete, btnAddCopy, btnSubstracCopy;
 
-        // Create a constructor that accepts the entire row and search the View hierarchy to find each subview
         public ViewHolder(View itemView) {
             super(itemView);
             // Store the item subviews in member variables
@@ -75,9 +67,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         }
     }
 
-    // Provide a suitable constructor
     public CardListAdapter(Context context, List<Card> cardList, Deck selectedDeck, InterfaceOnCardClick listenerCardClick, FragmentManager parenFragmentManager) {
-        // Initialize the class scope variables with values received from constructor
         this.listenerCardClick = listenerCardClick;
         this.context = context;
         this.cardList = cardList;
@@ -85,7 +75,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         this.parenFragmentManager = parenFragmentManager;
     }
 
-    // Create new views to be invoked by the layout manager
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -94,9 +83,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         token = preferences.getString(context.getString(R.string.preferences_apikey), null);
 
         ViewHolder viewHolder;
-        // Create a LayoutInflater object
         LayoutInflater inflater = LayoutInflater.from(context);
-        // Inflate the custom layout
         View view = inflater.inflate(R.layout.element_card_list, parent, false);
         viewHolder = new ViewHolder(view);
         listenerCardList = (InterfaceDeckCardList) context;
@@ -131,13 +118,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             }
             notifyItemChanged(i);
             System.out.println(cardList.get(i).getNumCards());
-//            if (selectedDeck.getUserDeck().get(i).getNumCopies() == 1) {
-//                viewHolder.btnSubstracCopy.setClickable(false);
-//                Toast.makeText(context, "Como minimo tienes que tener una carta!!", Toast.LENGTH_SHORT).show();
-//            } else {
-//                listenerCardList.substractCopyFromDeck(i);
-//                notifyItemChanged(i);
-//            }
         });
 
         view.setOnClickListener(v -> {
@@ -145,14 +125,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             listenerCardClick.onClick(cardList.get(i));
             Navigation.findNavController(view).navigate(R.id.action_FragmentList_to_fragmentCardInfo);
         });
-        // Return a new holder instance
         return viewHolder;
     }
 
-    // Replace the contents of a view to be invoked by the layout manager
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-        // Get element from your dataset at this position and replace the contents of the View with that element
         holder.cardName.setText(cardList.get(i).getName());
         holder.cardCost.setText(cardList.get(i).getManacost());
         holder.txtNumberCopies.setText(String.valueOf(cardList.get(i).getNumCards()));
@@ -164,7 +141,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         }
     }
 
-    // Return the size of your dataset
     @Override
     public int getItemCount() {
         return cardList.size();

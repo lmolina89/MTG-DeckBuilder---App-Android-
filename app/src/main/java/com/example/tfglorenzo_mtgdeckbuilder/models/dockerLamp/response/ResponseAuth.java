@@ -11,8 +11,10 @@ public class ResponseAuth {
     @Expose
     private String token;
     @SerializedName("user_nick")
-    @Expose
     private String user_nick;
+    @SerializedName("admin")
+    @Expose
+    private String admin;
 
     public String getResult() {
         return result;

@@ -1,5 +1,7 @@
 package com.example.tfglorenzo_mtgdeckbuilder.api;
 
+import com.example.tfglorenzo_mtgdeckbuilder.BuildConfig;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -7,13 +9,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okio.Buffer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 //clase para instanciar retrofit que muestra el result en string por consola antes de que GSON lo convierta a objeto java
+//para buscar errores en las respuestas de retrofit
 public class ApiClient {
-    private static final String BASE_URL = "http://mtgdeckbuilder.redirectme.net:80/api-users/endp/";
+//    private static final String BASE_URL = "http://10.0.2.2:80/api-users/endp/";
+    private static final String BASE_URL = "http://mtgdeckbuilderapi.redirectme.net:80/api-users/endp/";
 
     public static Retrofit getClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -34,7 +37,6 @@ public class ApiClient {
                 response = response.newBuilder()
                         .body(ResponseBody.create(responseBody.contentType(), responseBodyString))
                         .build();
-
                 return response;
             }
         });

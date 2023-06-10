@@ -6,17 +6,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,10 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import android.Manifest;
-
 import com.example.tfglorenzo_mtgdeckbuilder.R;
-import com.example.tfglorenzo_mtgdeckbuilder.UserActivity;
 import com.example.tfglorenzo_mtgdeckbuilder.adapters.DeckListAdapter;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ApiClient;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
@@ -44,16 +35,13 @@ import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceUpdateDecks;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.UpdateDeckData;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseUpdateDeck;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Deck;
-import com.example.tfglorenzo_mtgdeckbuilder.models.userData.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,13 +65,9 @@ public class EditDialogFragment extends DialogFragment {
     private int deckId;
     private String currentPhotoPath;
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
-    private Retrofit retrofit = ApiClient.getClient();
     private String token;
     private DockerLampApi dockerLampApi;
 
-    private static final int RESPUESTA_PERMISO_CAMARA = 100;
-    private static final int RESPUESTA_PERMISO_ALMACENAMIENTO = 200;
-    private static final int RESPUESTA_PERMISO_GALERIA = 300;
 
     public EditDialogFragment(RecyclerView.Adapter adapter, Object object, int i, String token, Context context) {
         this.token = token;
@@ -102,9 +86,8 @@ public class EditDialogFragment extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
-//        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
-        dockerLampApi = retrofit.create(DockerLampApi.class);
-        if (adapter instanceof InterfaceUpdateDecks) {                                      //dialogo para editar mazos
+        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
+        if (adapter instanceof InterfaceUpdateDecks) {
             deckId = deckToEdit.getId();
 
             View view = inflater.inflate(R.layout.fragment_edit_dialog, null);
@@ -118,11 +101,7 @@ public class EditDialogFragment extends DialogFragment {
             btnCamera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
                     openCamera();
-
-
                 }
             });
 
@@ -168,7 +147,6 @@ public class EditDialogFragment extends DialogFragment {
         updateDeckData.setName(name);
 
         Call<ResponseUpdateDeck> call = dockerLampApi.updateDeck(updateDeckData, token, deckId);
-
         call.enqueue(new Callback<ResponseUpdateDeck>() {
             @Override
             public void onResponse(Call<ResponseUpdateDeck> call, Response<ResponseUpdateDeck> response) {

@@ -43,20 +43,20 @@ public interface DockerLampApi {
     Call<ResponseGetDeck> getUserDeckList(@Header("api-key") String token);
 
     @POST("deck")
-    Call<ResponseNewDeck> insertDeck(@Body DeckData deckData, @Header("api-key")String token);
+    Call<ResponseNewDeck> insertDeck(@Body DeckData deckData, @Header("api-key") String token);
 
     @DELETE("deck")
-    Call<ResponseDeleteDeck> deleteDeck(@Header("api-key")String token, @Query("deck_id") int deckId);
+    Call<ResponseDeleteDeck> deleteDeck(@Header("api-key") String token, @Query("deck_id") int deckId);
 
     @PUT("deck")
-    Call<ResponseUpdateDeck> updateDeck(@Body UpdateDeckData updateDeckData, @Header("api-key")String token, @Query("id") int deckId);
+    Call<ResponseUpdateDeck> updateDeck(@Body UpdateDeckData updateDeckData, @Header("api-key") String token, @Query("id") int deckId);
 
     //      card
     @GET("card")
-    Call<ResponseGetDeckCards> getDeckCards(@Header("api-key")String token, @Query("deck_id")int deckId);
+    Call<ResponseGetDeckCards> getDeckCards(@Header("api-key") String token, @Query("deck_id") int deckId);
 
     @DELETE("card")
-    Call<ResponseDeleteCard> deleteCard(@Query("card_id")String cardId, @Header("api-key") String token, @Query("deck_id") int deckId);
+    Call<ResponseDeleteCard> deleteCard(@Query("card_id") String cardId, @Header("api-key") String token, @Query("deck_id") int deckId);
 
     @PUT("card")
     Call<ResponseUpdateNumCards> updateNumCards(@Query("deck_id") int deckId, @Header("api-key") String token, @Body UpdateNumCardsData updateNumCardsData);

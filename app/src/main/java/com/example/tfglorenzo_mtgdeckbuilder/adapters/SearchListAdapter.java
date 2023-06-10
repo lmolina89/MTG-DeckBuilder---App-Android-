@@ -11,20 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tfglorenzo_mtgdeckbuilder.R;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ApiClient;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ScryfallApi;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceDeckCardList;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceOnCardClick;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.InsertCardData;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseInsertCard;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Card;
-import com.example.tfglorenzo_mtgdeckbuilder.models.userData.Deck;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,20 +33,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
+public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
     private Context context;
     private List<Card> searchedCardList;
     private InterfaceOnCardClick listenerClick;
-    private InterfaceDeckCardList listenerCardList;
     private int i;
     private SharedPreferences preferences;
     private String token;
     private int deckId;
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
     private final DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView cardName;
@@ -83,8 +80,6 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
         viewHolder.btnAddCard.setOnClickListener(view1 -> {
             i = viewHolder.getAdapterPosition();
             insertCardOnDeck(i, token, deckId);
-//            listenerCardList = (InterfaceDeckCardList) context;
-//            listenerCardList.addCardToDeck(searchedCardList.get(i));
         });
 
         view.setOnClickListener(v -> {
@@ -109,7 +104,6 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
                     .into(holder.cardMini);
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -139,7 +133,7 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
             @Override
             public void onResponse(Call<ResponseInsertCard> call, Response<ResponseInsertCard> response) {
                 ResponseInsertCard responseInsertCard = response.body();
-                if (response.errorBody() != null){
+                if (response.errorBody() != null) {
                     try {
                         System.out.println(response.errorBody().string());
                     } catch (IOException | NullPointerException e) {
@@ -164,9 +158,7 @@ public class SearchListAdapter  extends RecyclerView.Adapter<SearchListAdapter.V
                 Toast.makeText(context, "Hay algun problema con la api", Toast.LENGTH_SHORT).show();
                 System.out.println(t.getLocalizedMessage());
                 t.getCause();
-                System.out.println(t.toString());
             }
         });
     }
-
 }

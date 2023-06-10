@@ -91,15 +91,13 @@ public class FragmentLogin extends Fragment {
             listenerLogin = (InterfaceLogin) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + "Deberias implementar la interfaz, muchacho");
+                    + "Deberias implementar la interfaz en el login, muchacho");
         }
     }
 
     public void loginAuth(String email, String pass) {
         LoginData loginData = new LoginData(email, pass);
-
         Call<ResponseAuth> call = dockerLampApi.userAuth(loginData);
-
         call.enqueue(new Callback<ResponseAuth>() {
             @Override
             public void onResponse(Call<ResponseAuth> call, Response<ResponseAuth> response) {
@@ -110,7 +108,6 @@ public class FragmentLogin extends Fragment {
 
                     if (auth.getResult().equals("ok")) {
                         String userNick = auth.getUser_nick();
-//                        String nick = preferences.getString(getString(R.string.preferences_nick), null);
                         txtError.setText("");
                         Toast.makeText(getActivity(), "Bienvenido " + userNick, Toast.LENGTH_SHORT).show();
                         apikey = auth.getToken();//si es un usuario normal inicia sesion

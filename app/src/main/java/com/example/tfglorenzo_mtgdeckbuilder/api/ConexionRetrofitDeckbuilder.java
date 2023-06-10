@@ -4,11 +4,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConexionRetrofitDeckbuilder {
-    private final String URL = "http://mtgdeckbuilder.redirectme.net:80/api-users/endp/";
-    private static ConexionRetrofitDeckbuilder instance;
+    //    private final String URL = "http://mtgdeckbuilderapi.redirectme.net:80/api-users/endp/";
+    private static final String URL = "http://10.0.2.2:80/api-users/endp/";
     private Retrofit retrofit;
     private DockerLampApi dockerLampApi;
-    private ScryfallApi scryfallApi;
 
     public ConexionRetrofitDeckbuilder() {
         retrofit = new Retrofit.Builder()
@@ -18,7 +17,6 @@ public class ConexionRetrofitDeckbuilder {
 
         dockerLampApi = retrofit.create(DockerLampApi.class);
     }
-
 
     public DockerLampApi getDockerLampApi() {
         return dockerLampApi;

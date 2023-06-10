@@ -1,6 +1,5 @@
 package com.example.tfglorenzo_mtgdeckbuilder.models.userData;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,21 +16,14 @@ public class User {
     @SerializedName("nick")
     @Expose
     private String nick;
-    @SerializedName("imageUri")
-    @Expose
-    private String imageUri;
     @SerializedName("token")
     @Expose
     private String token;
-    @SerializedName("deckList")
-    @Expose
-    private String deckList;
 
-    public User(String nick, String email, String passwd, String imageUri) {
+    public User(String nick, String email, String passwd) {
         this.email = email;
         this.passwd = passwd;
         this.nick = nick;
-        this.imageUri = imageUri;
     }
 
     public String getId() {
@@ -66,14 +58,6 @@ public class User {
         this.nick = nick;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
     public String getToken() {
         return token;
     }
@@ -82,19 +66,5 @@ public class User {
         this.token = token;
     }
 
-    public DeckList getDeckList() {
-        DeckList list;
-        Gson gson = new Gson();
-        list = gson.fromJson(deckList, DeckList.class);
-        return list;
-    }
 
-    public String getDecklist() {
-        return deckList;
-    }
-
-    public void setDeckList(DeckList list) {
-        Gson gson = new Gson();
-        deckList = gson.toJson(list, DeckList.class);
-    }
 }

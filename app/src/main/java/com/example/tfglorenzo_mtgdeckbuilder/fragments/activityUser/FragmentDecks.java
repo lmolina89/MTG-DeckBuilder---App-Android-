@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tfglorenzo_mtgdeckbuilder.BuildConfig;
 import com.example.tfglorenzo_mtgdeckbuilder.R;
 import com.example.tfglorenzo_mtgdeckbuilder.adapters.DeckListAdapter;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;

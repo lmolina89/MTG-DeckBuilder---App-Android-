@@ -13,19 +13,13 @@ public class RegisterData {
     @SerializedName("nick")
     @Expose
     private String nick;
-    @SerializedName("imageUri")
-    @Expose
-    private String imageUri;
-    @SerializedName("deckList")
-    @Expose
-    private String deckList;
 
-    public RegisterData(String email, String passwd, String nick, String imageUri, String deckList) {
+
+
+    public RegisterData(String email, String passwd, String nick) {
         this.email = email;
         this.passwd = passwd;
         this.nick = nick;
-        this.imageUri = imageUri;
-        this.deckList = deckList;
     }
 
     public String getEmail() {
@@ -52,19 +46,4 @@ public class RegisterData {
         this.nick = nick;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
-    public String getDeckList() {
-        return deckList;
-    }
-
-    public void setDeckList(String deckList) {
-        this.deckList = deckList;
-    }
 }

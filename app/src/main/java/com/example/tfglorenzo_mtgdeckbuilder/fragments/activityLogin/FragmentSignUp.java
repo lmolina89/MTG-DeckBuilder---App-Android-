@@ -1,10 +1,7 @@
 package com.example.tfglorenzo_mtgdeckbuilder.fragments.activityLogin;
-
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.tfglorenzo_mtgdeckbuilder.R;
+import com.example.tfglorenzo_mtgdeckbuilder.api.ApiClient;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceLogin;
@@ -25,6 +22,7 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class FragmentSignUp extends Fragment {
     private Button btnBack, btnCreate;
@@ -32,6 +30,7 @@ public class FragmentSignUp extends Fragment {
     private TextView txtErrorSign;
     private InterfaceLogin listenerLogin;
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
+
 
     public FragmentSignUp() {
         // Required empty public constructor
@@ -53,6 +52,10 @@ public class FragmentSignUp extends Fragment {
         txtEmail = view.findViewById(R.id.edit_email);
         txtPass = view.findViewById(R.id.edit_pass);
         txtErrorSign = view.findViewById(R.id.txt_errorSu);
+
+//        txtEmail.setText("lmolinamoreno@hotmail.com");
+//        txtNick.setText("dummyplug_01");
+//        txtPass.setText("lmolina");
 
         btnBack.setOnClickListener(view1 -> {
             listenerLogin.backToLogin();
@@ -80,9 +83,8 @@ public class FragmentSignUp extends Fragment {
         RegisterData registerData = new RegisterData(
                 txtEmail.toString(),
                 txtPass.toString(),
-                txtNick.toString(),
-                "",
-                "{}");
+                txtNick.toString()
+        );
 
         DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
         String nick = txtNick.getText().toString();
