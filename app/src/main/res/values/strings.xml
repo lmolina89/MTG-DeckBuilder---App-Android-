@@ -2,12 +2,6 @@
     <string name="app_name">TFG Lorenzo - MTG Deck Builder</string>
 
     <!--    default-->
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="action_settings">Action Setings</string>
-    <string name="first_fragment_label">First fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
 
     <!--    strings textViex-->
     <string name="txtBotonSubmit">Submit</string>
@@ -19,11 +13,6 @@
     <string name="signUp">Sign up</string>
     <string name="account">You don\'t have account?</string>
     <string name="txtNick">Nick</string>
-    <string name="txtNewAccountActivity">Registry new account</string>
-    <string name="errorLogin">Incorrect email or password</string>
-    <string name="errorPass">Invalid password</string>
-    <string name="errorNick">Invalid nick</string>
-    <string name="errorEmail">Invalid email</string>
 
     <!--    strings button-->
     <string name="bntVolver">Volver</string>
@@ -31,9 +20,7 @@
     <string name="btnBackSignUp">Back to login</string>
 
     <!--    strings imageView-->
-    <string name="imgAkroma">Akroma angel de la ira</string>
     <string name="txtImgLogo">Logo antiguo MTG</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="coste_mana">Coste mana</string>
     <string name="nombre_carta">Nombre carta</string>
     <string name="nombremazo">NombreMazo</string>

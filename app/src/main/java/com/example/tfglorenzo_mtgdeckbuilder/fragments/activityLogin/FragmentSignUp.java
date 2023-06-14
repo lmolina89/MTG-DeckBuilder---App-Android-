@@ -1,7 +1,10 @@
 package com.example.tfglorenzo_mtgdeckbuilder.fragments.activityLogin;
+
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.tfglorenzo_mtgdeckbuilder.R;
-import com.example.tfglorenzo_mtgdeckbuilder.api.ApiClient;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceLogin;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.RegisterData;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseRegister;
 
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class FragmentSignUp extends Fragment {
     private Button btnBack, btnCreate;
@@ -110,14 +111,6 @@ public class FragmentSignUp extends Fragment {
             @Override
             public void onResponse(Call<ResponseRegister> call, Response<ResponseRegister> response) {
                 ResponseRegister responseRegister = response.body();
-//                if (response.errorBody() != null) {
-//                    try {
-//                        System.out.println(response.errorBody().string());
-//                    } catch (IOException | NullPointerException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    System.out.println(call.request());
-//                }
                 if (responseRegister.getResult().equals("ok") && responseRegister.getInsertId() != 0) {
                     listenerLogin.backToLogin();
                     Toast.makeText(getContext(), "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
@@ -125,10 +118,9 @@ public class FragmentSignUp extends Fragment {
                 if (responseRegister.getInsertId() == 0) {
                     txtErrorSign.setText("El email ya existe");
                 }
-                if(responseRegister.getResult().equals("error")){
+                if (responseRegister.getResult().equals("error")) {
                     txtErrorSign.setText("Ha ocurrido algun problema");
                 }
-
             }
 
             @Override

@@ -105,15 +105,6 @@ public class FragmentCardList extends Fragment implements InterfaceCardList {
         call.enqueue(new Callback<ResponseGetDeckCards>() {
             @Override
             public void onResponse(Call<ResponseGetDeckCards> call, Response<ResponseGetDeckCards> response) {
-//                if (response.errorBody() != null) {
-//                    try {
-//                        System.out.println(response.errorBody().string());
-//                    } catch (IOException | NullPointerException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    System.out.println(call.request());
-//                }
-
                 if (response.isSuccessful() && response.body() != null) {
                     ResponseGetDeckCards responseGetDeckCards = response.body();
                     List<Card> newCardList = responseGetDeckCards.getCards();

@@ -117,7 +117,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
                 cardList.get(i).setNumCards(numCards);
             }
             notifyItemChanged(i);
-            System.out.println(cardList.get(i).getNumCards());
         });
 
         view.setOnClickListener(v -> {

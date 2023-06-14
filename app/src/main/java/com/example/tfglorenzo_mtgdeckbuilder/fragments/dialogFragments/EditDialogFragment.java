@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.example.tfglorenzo_mtgdeckbuilder.R;
 import com.example.tfglorenzo_mtgdeckbuilder.adapters.DeckListAdapter;
-import com.example.tfglorenzo_mtgdeckbuilder.api.ApiClient;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceDeckCardList;
@@ -46,7 +45,6 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class EditDialogFragment extends DialogFragment {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -150,15 +148,6 @@ public class EditDialogFragment extends DialogFragment {
         call.enqueue(new Callback<ResponseUpdateDeck>() {
             @Override
             public void onResponse(Call<ResponseUpdateDeck> call, Response<ResponseUpdateDeck> response) {
-                if (response.errorBody() != null) {
-                    try {
-                        System.out.println(response.errorBody().string());
-
-                    } catch (IOException | NullPointerException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().getResult().equals("error")) {
                         System.out.println("Formato de imagen no permitido (solo jpg,jpeg,png)");
@@ -166,7 +155,6 @@ public class EditDialogFragment extends DialogFragment {
                         deckToEdit.setDeckImage(imgUri);
                         deckToEdit.setName(name);
                         listenerUpdateDecks.updateDeckList(i, deckToEdit);
-                        System.out.println("Se ha editado correctamente el mazo");
                     }
                 } else {
                     System.out.println("Ha ocurrido algun problema");
@@ -186,10 +174,7 @@ public class EditDialogFragment extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("requestcode -> " + requestCode);
-        System.out.println("resultcode -> " + resultCode);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            System.out.println(data.getData().toString());
             uri = data.getData();
             base64Image = convertImageToBase64(uri);
             editImageUri.setText(uri.toString());
@@ -237,7 +222,7 @@ public class EditDialogFragment extends DialogFragment {
 
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        System.out.println("DENTRO DE OPENCAMERA()0");
+
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             File photoFile = null;
             try {
@@ -246,8 +231,6 @@ public class EditDialogFragment extends DialogFragment {
                 ex.printStackTrace();
             }
             if (photoFile != null) {
-                System.out.println("DENTRO DE OPENCAMERA()2");
-                System.out.println(photoFile.getAbsolutePath());
                 Uri photoUri = FileProvider.getUriForFile(
                         context,
                         "com.example.android.fileprovider",

@@ -129,7 +129,6 @@ public class FragmentLogin extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseAuth> call, Throwable t) {
-                System.out.println(call.request());
                 Toast.makeText(getContext(), "No se ha podido hacer la autenticacion", Toast.LENGTH_SHORT).show();
                 System.out.println(t.getLocalizedMessage());
                 t.getCause();

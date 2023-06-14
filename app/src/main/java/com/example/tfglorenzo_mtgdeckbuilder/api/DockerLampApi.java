@@ -32,7 +32,7 @@ public interface DockerLampApi {
     @GET("user")
     Call<ResponseGetUsers> getUserList(@Header("api-key") String token);
 
-    @POST("auth")
+    @POST("login")
     Call<ResponseAuth> userAuth(@Body LoginData loginData);
 
     @POST("register")

@@ -15,8 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 //clase para instanciar retrofit que muestra el result en string por consola antes de que GSON lo convierta a objeto java
 //para buscar errores en las respuestas de retrofit
 public class ApiClient {
-//    private static final String BASE_URL = "http://10.0.2.2:80/api-users/endp/";
-    private static final String BASE_URL = "http://mtgdeckbuilderapi.redirectme.net:80/api-users/endp/";
+//    private static final String BASE_URL = "http://10.0.2.2:80/mtg-deckbuilder/endp/";
+    private static final String BASE_URL = "http://mtgdeckbuilderapi.redirectme.net:80/mtg-deckbuilder/endp/";
 
     public static Retrofit getClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

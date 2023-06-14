@@ -16,11 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tfglorenzo_mtgdeckbuilder.R;
-import com.example.tfglorenzo_mtgdeckbuilder.api.ApiClient;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
-import com.example.tfglorenzo_mtgdeckbuilder.api.ScryfallApi;
-import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceDeckCardList;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceOnCardClick;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.InsertCardData;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseInsertCard;
@@ -32,7 +29,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
     private Context context;
@@ -44,7 +40,6 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     private int deckId;
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
     private final DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView cardName;
         TextView cardCost;
@@ -133,14 +128,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
             @Override
             public void onResponse(Call<ResponseInsertCard> call, Response<ResponseInsertCard> response) {
                 ResponseInsertCard responseInsertCard = response.body();
-                if (response.errorBody() != null) {
-                    try {
-                        System.out.println(response.errorBody().string());
-                    } catch (IOException | NullPointerException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                System.out.println(response);
+
                 if (response.isSuccessful() && response.body() != null) {
                     if (responseInsertCard.getResult().equals("ok")) {
                         Toast.makeText(context, "Carta añadida correctamente", Toast.LENGTH_SHORT).show();
