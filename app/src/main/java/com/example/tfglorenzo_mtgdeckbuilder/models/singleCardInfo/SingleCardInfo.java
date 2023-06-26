@@ -61,6 +61,8 @@ public class SingleCardInfo {
     @SerializedName("cmc")
     @Expose
     private Double cmc;
+
+    //type_line	:	Basic Land — Forest // bosque normal
     @SerializedName("type_line")
     @Expose
     private String typeLine;

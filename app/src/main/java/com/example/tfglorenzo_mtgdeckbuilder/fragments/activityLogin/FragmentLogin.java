@@ -18,17 +18,21 @@ import android.widget.Toast;
 
 import com.example.tfglorenzo_mtgdeckbuilder.R;
 import com.example.tfglorenzo_mtgdeckbuilder.UserActivity;
+import com.example.tfglorenzo_mtgdeckbuilder.api.InterceptorRetrofit;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.databinding.FragmentLoginBinding;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceLogin;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.LoginData;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseAuth;
+import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseErrorBody;
 import com.example.tfglorenzo_mtgdeckbuilder.models.userData.UsersList;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class FragmentLogin extends Fragment {
     private EditText txtEmail, txtPass;
@@ -37,7 +41,7 @@ public class FragmentLogin extends Fragment {
     private InterfaceLogin listenerLogin;
     private FragmentLoginBinding fragmentLoginBinding;
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
-    DockerLampApi dockerLampApi;
+    private DockerLampApi dockerLampApi;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private UsersList userList = new UsersList();
@@ -51,7 +55,9 @@ public class FragmentLogin extends Fragment {
         super.onCreate(savedInstanceState);
         preferences = getActivity().getSharedPreferences(getString(R.string.userPreferences), Context.MODE_PRIVATE);
         conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
-        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
+//        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
+        Retrofit retrofit = InterceptorRetrofit.getClient();
+        dockerLampApi = retrofit.create(DockerLampApi.class);
     }
 
     @Override
@@ -102,10 +108,9 @@ public class FragmentLogin extends Fragment {
             @Override
             public void onResponse(Call<ResponseAuth> call, Response<ResponseAuth> response) {
                 String apikey;
-
+                //si el codigo de respuesta es 201 inicia el login
                 if (response.isSuccessful() && response.body() != null) {
                     ResponseAuth auth = response.body();
-
                     if (auth.getResult().equals("ok")) {
                         String userNick = auth.getUser_nick();
                         txtError.setText("");
@@ -121,8 +126,12 @@ public class FragmentLogin extends Fragment {
                         editor.putBoolean(getString(R.string.preferences_is_loged), true);
                         editor.commit();
                         startActivity(intent);
-                    } else {
-                        txtError.setText("Usuario o contraseña incorrectos");
+                    }
+                } else {
+                    //si el codigo de respuesta es distinto se procesa el error para mostrar el mensaje
+                    if (response.errorBody() != null) {
+                        ResponseErrorBody responseBody = new Gson().fromJson(response.errorBody().charStream(), ResponseErrorBody.class);
+                        txtError.setText(responseBody.getDetails());
                     }
                 }
             }
