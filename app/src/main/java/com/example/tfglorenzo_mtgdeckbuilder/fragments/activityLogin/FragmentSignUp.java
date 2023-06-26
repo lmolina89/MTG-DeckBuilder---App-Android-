@@ -54,10 +54,6 @@ public class FragmentSignUp extends Fragment {
         txtPass = view.findViewById(R.id.edit_pass);
         txtErrorSign = view.findViewById(R.id.txt_errorSu);
 
-//        txtEmail.setText("lmolinamoreno@hotmail.com");
-//        txtNick.setText("dummyplug_01");
-//        txtPass.setText("lmolina");
-
         btnBack.setOnClickListener(view1 -> {
             listenerLogin.backToLogin();
         });
@@ -91,19 +87,21 @@ public class FragmentSignUp extends Fragment {
         String nick = txtNick.getText().toString();
         String email = txtEmail.getText().toString();
         String pass = txtPass.getText().toString();
-        String regexEmail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+        final String regexEmail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
         if (nick.equals("")) {
-            txtErrorSign.setText("El nick ya existe o no tiene un formato valido");
+            txtErrorSign.setText(getString(R.string.error_nick));
+            return;
         } else if (email.equals("") || !email.matches(regexEmail)) {
-            txtErrorSign.setText("El email no tiene un formato valido");
+            txtErrorSign.setText(getString(R.string.error_email));
+            return;
         } else if (pass.matches("")) {
-            txtErrorSign.setText("Contraseña vacia");
+            txtErrorSign.setText(getString(R.string.error_pass));
+            return;
         } else {
             txtErrorSign.setText("");
             registerData.setEmail(email);
             registerData.setPasswd(pass);
             registerData.setNick(nick);
-
         }
         Call<ResponseRegister> call = dockerLampApi.userRegister(registerData);
 
@@ -116,10 +114,10 @@ public class FragmentSignUp extends Fragment {
                     Toast.makeText(getContext(), "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
                 }
                 if (responseRegister.getInsertId() == 0) {
-                    txtErrorSign.setText("El email ya existe");
+                    txtErrorSign.setText(R.string.email_exists);
                 }
                 if (responseRegister.getResult().equals("error")) {
-                    txtErrorSign.setText("Ha ocurrido algun problema");
+                    txtErrorSign.setText(R.string.register_error);
                 }
             }
 

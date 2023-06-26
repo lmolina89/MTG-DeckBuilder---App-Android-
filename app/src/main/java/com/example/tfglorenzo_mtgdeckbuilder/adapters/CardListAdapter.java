@@ -52,7 +52,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView cardName, cardCost, txtNumberCopies;
         ImageView cardMini;
-        ImageButton btnDelete, btnAddCopy, btnSubstracCopy;
+        ImageButton btnDelete, btnAddCopy, btnSubstractCopy;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,7 +62,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             cardMini = itemView.findViewById(R.id.imageView);
             btnDelete = itemView.findViewById(R.id.btn_delete_card);
             btnAddCopy = itemView.findViewById(R.id.btn_add_copies);
-            btnSubstracCopy = itemView.findViewById(R.id.btn_substract_copies);
+            btnSubstractCopy = itemView.findViewById(R.id.btn_substract_copies);
             txtNumberCopies = itemView.findViewById(R.id.txt_num_copies);
         }
     }
@@ -107,7 +107,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             notifyItemChanged(i);
         });
 
-        viewHolder.btnSubstracCopy.setOnClickListener(view1 -> {
+        viewHolder.btnSubstractCopy.setOnClickListener(view1 -> {
             i = viewHolder.getAdapterPosition();
             modifyNumCards("down", cardList.get(i).getId(), deckId, token);
             int numCards = cardList.get(i).getNumCards();
@@ -159,10 +159,9 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         call.enqueue(new Callback<ResponseUpdateNumCards>() {
             @Override
             public void onResponse(Call<ResponseUpdateNumCards> call, Response<ResponseUpdateNumCards> response) {
-                if (response.body().getResult().equals("ok")) {
-                    Toast.makeText(context, "Actualizado el numero de cartas", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "No se ha modificado el numero de cartas", Toast.LENGTH_SHORT).show();
+
+                if(response.body().getResult().equals("error")){
+                    Toast.makeText(context, "Solo puedes tener un maximo de 4 copias", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -77,7 +77,7 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHo
             i = viewHolder.getAdapterPosition();
             Toast.makeText(context, "Mazo seleccionado: " + deckList.get(i).getName(), Toast.LENGTH_SHORT).show();
             listenerDeckClick.onClick(deckList.get(i));
-            selectedDeckName = deckList.get(i).getName();
+//            selectedDeckName = deckList.get(i).getName();
             Navigation.findNavController(view).navigate(R.id.action_FragmentDecks_to_FragmentList);
         });
 

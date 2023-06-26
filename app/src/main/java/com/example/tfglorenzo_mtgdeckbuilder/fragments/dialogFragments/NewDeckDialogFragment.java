@@ -39,10 +39,14 @@ public class NewDeckDialogFragment extends DialogFragment {
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
     private String token;
     private SharedPreferences preferences;
+    private Context context;
 
-    public NewDeckDialogFragment(DeckListAdapter deckListAdapter) {
+    public NewDeckDialogFragment(DeckListAdapter deckListAdapter, Context context) {
         listenerUpdateDecks = (InterfaceUpdateDecks) deckListAdapter;
+        this.context = context;
     }
+
+
 
     @NonNull
     @Override
@@ -59,7 +63,6 @@ public class NewDeckDialogFragment extends DialogFragment {
         builder.setMessage("Nombre del nuevo mazo")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getContext(), "Creado nuevo mazo " + editNewDeck.getText(), Toast.LENGTH_SHORT).show();
                         String newDeckName = editNewDeck.getText().toString();
                         Deck newDeck = new Deck();
                         newDeck.setName(newDeckName);
@@ -85,27 +88,30 @@ public class NewDeckDialogFragment extends DialogFragment {
         }
     }
 
-    public void createNewDeck(String newDeckName){
+    public void createNewDeck(String newDeckName) {
         DeckData deckData = new DeckData();
         deckData.setName(newDeckName);
 
         DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
-        Call<ResponseNewDeck> callNewDeck = dockerLampApi.insertDeck(deckData,token);
+        Call<ResponseNewDeck> callNewDeck = dockerLampApi.insertDeck(deckData, token);
         callNewDeck.enqueue(new Callback<ResponseNewDeck>() {
             @Override
             public void onResponse(Call<ResponseNewDeck> call, Response<ResponseNewDeck> response) {
-//                Toast.makeText(getContext(), "Mazo creado correctamente", Toast.LENGTH_SHORT).show();
-                Deck deck = new Deck();
-                deck.setId(response.body().getInsertId());
-                deck.setName(newDeckName);
-                deck.setNumCards(0);
+                if(response.isSuccessful() && response.body() != null){
+                    Deck deck = new Deck();
+                    deck.setId(response.body().getInsertId());
+                    deck.setName(newDeckName);
+                    deck.setNumCards(0);
 
-                listenerUpdateDecks.updateNewDeckList(deck);
+                    listenerUpdateDecks.updateNewDeckList(deck);
+                    Toast.makeText(context, "Mazo creado correctamente: "+newDeckName, Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
             public void onFailure(Call<ResponseNewDeck> call, Throwable t) {
-
+                Toast.makeText(context, "Hay un problema con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }

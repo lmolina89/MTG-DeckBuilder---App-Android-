@@ -120,7 +120,7 @@ public class FragmentDecks extends Fragment  implements InterfaceUserDeck {
         );
 
         btnAdd.setOnClickListener(view1 -> {
-            newDeckDialogFragment = new NewDeckDialogFragment(deckListAdapter);
+            newDeckDialogFragment = new NewDeckDialogFragment(deckListAdapter, getContext());
             newDeckDialogFragment.show(getParentFragmentManager(), "Nuevo Mazo");
         });
         deckList = getView().findViewById(R.id.list_deck);

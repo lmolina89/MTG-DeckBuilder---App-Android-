@@ -49,12 +49,10 @@ import retrofit2.Response;
 public class EditDialogFragment extends DialogFragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
-    Context context;
+    private Context context;
     private RecyclerView.Adapter adapter;
     private EditText editExistingDeckName, editImageUri;
     private ImageButton btnGallery, btnCamera;
-    private InterfaceDeckCardList listenerCardList;
-    private InterfaceLogin listenerLogin;
     private InterfaceUpdateDecks listenerUpdateDecks;
     private Deck deckToEdit;
     private int i;
@@ -67,15 +65,13 @@ public class EditDialogFragment extends DialogFragment {
     private DockerLampApi dockerLampApi;
 
 
-    public EditDialogFragment(RecyclerView.Adapter adapter, Object object, int i, String token, Context context) {
+    public EditDialogFragment(DeckListAdapter adapter, Deck deck, int i, String token, Context context) {
         this.token = token;
         this.adapter = adapter;
         this.context = context;
         this.i = i;
-        if (adapter instanceof DeckListAdapter) {//si el adaptador que lo llama es el de lista de mazos, hace cast al listenerUpdateDecks y al objeto Deck
-            listenerUpdateDecks = (InterfaceUpdateDecks) adapter;
-            deckToEdit = (Deck) object;
-        }
+        listenerUpdateDecks = (InterfaceUpdateDecks) adapter;
+        deckToEdit = deck;
     }
 
     @NonNull
@@ -115,25 +111,12 @@ public class EditDialogFragment extends DialogFragment {
             builder.setMessage("Editar el mazo")
                     .setPositiveButton("Aceptar", (dialog, id) -> {
                         updateDeck();
-                        Toast.makeText(getContext(), "Editado correctamente...", Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Cancelar", (dialog, id) -> {
                         Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                     });
         }
         return builder.create();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof InterfaceDeckCardList) {
-            listenerCardList = (InterfaceDeckCardList) context;
-        } else if (context instanceof InterfaceLogin) {
-            listenerLogin = (InterfaceLogin) context;
-        } else {
-            throw new RuntimeException("Implementa la interfaz en el dialogo puto");
-        }
     }
 
     private void updateDeck() {
@@ -150,14 +133,15 @@ public class EditDialogFragment extends DialogFragment {
             public void onResponse(Call<ResponseUpdateDeck> call, Response<ResponseUpdateDeck> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().getResult().equals("error")) {
-                        System.out.println("Formato de imagen no permitido (solo jpg,jpeg,png)");
+                        Toast.makeText(context, "No se han producido cambios", Toast.LENGTH_SHORT).show();
                     } else {
                         deckToEdit.setDeckImage(imgUri);
                         deckToEdit.setName(name);
                         listenerUpdateDecks.updateDeckList(i, deckToEdit);
+                        Toast.makeText(context, "Editado correctamente...", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    System.out.println("Ha ocurrido algun problema");
+                    Toast.makeText(context, "Ha ocurrido algun problema al editar", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -166,7 +150,7 @@ public class EditDialogFragment extends DialogFragment {
                 System.out.println(t.getLocalizedMessage());
                 System.out.println(t.getCause());
                 System.out.println(call.request().toString());
-                System.out.println("Ha habido algun error con la api");
+                Toast.makeText(context, "Error con el servidor al editar", Toast.LENGTH_SHORT).show();
             }
         });
     }

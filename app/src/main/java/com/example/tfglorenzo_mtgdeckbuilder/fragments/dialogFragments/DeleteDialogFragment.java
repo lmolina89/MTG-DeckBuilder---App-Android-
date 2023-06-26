@@ -37,7 +37,6 @@ public class DeleteDialogFragment extends DialogFragment {
     private int i;
     private int deckId;
     private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder;
-    private String cardId;
     private String token;
 
     private DockerLampApi dockerLampApi;
@@ -69,7 +68,6 @@ public class DeleteDialogFragment extends DialogFragment {
         builder.setMessage("¿Seguro que quieres eliminar?")
                 .setPositiveButton("Aceptar", (dialog, id) -> {
                     if (adapter instanceof InterfaceUpdateCards) {
-                        cardId = cardList.get(i).getId();
                         deleteCard(cardList.get(i).getId());
                         Toast.makeText(getContext(), "Carta eliminada correctamente...", Toast.LENGTH_SHORT).show();
                     } else if (adapter instanceof InterfaceUpdateDecks) {
@@ -96,7 +94,6 @@ public class DeleteDialogFragment extends DialogFragment {
                         listenerUpdateDecks.updateDeleteDeckList(i);
                     } else {
                         Toast.makeText(getContext(), "Hay algun error con la eliminacion", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             }
@@ -120,7 +117,7 @@ public class DeleteDialogFragment extends DialogFragment {
 
             @Override
             public void onFailure(Call<ResponseDeleteCard> call, Throwable t) {
-
+                Toast.makeText(getContext(), "No hay respuesta del servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }

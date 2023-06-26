@@ -38,7 +38,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     private SharedPreferences preferences;
     private String token;
     private int deckId;
-    private ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
+    private final ConexionRetrofitDeckbuilder conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
     private final DockerLampApi dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView cardName;
@@ -55,10 +55,10 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         }
     }
 
-    public SearchListAdapter(Context context, List<Card> listaCartas, int deckId, InterfaceOnCardClick listenerClick) {
+    public SearchListAdapter(Context context, List<Card> cardList, int deckId, InterfaceOnCardClick listenerClick) {
         this.deckId = deckId;
         this.context = context;
-        this.searchedCardList = listaCartas;
+        this.searchedCardList = cardList;
         this.listenerClick = listenerClick;
     }
 
