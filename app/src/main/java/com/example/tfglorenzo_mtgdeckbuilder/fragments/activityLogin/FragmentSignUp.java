@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,9 @@ import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.interfaces.InterfaceLogin;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.data.RegisterData;
+import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseErrorBody;
 import com.example.tfglorenzo_mtgdeckbuilder.models.dockerLamp.response.ResponseRegister;
+import com.google.gson.Gson;
 
 
 import retrofit2.Call;
@@ -87,12 +91,8 @@ public class FragmentSignUp extends Fragment {
         String nick = txtNick.getText().toString();
         String email = txtEmail.getText().toString();
         String pass = txtPass.getText().toString();
-        final String regexEmail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
         if (nick.equals("")) {
             txtErrorSign.setText(getString(R.string.error_nick));
-            return;
-        } else if (email.equals("") || !email.matches(regexEmail)) {
-            txtErrorSign.setText(getString(R.string.error_email));
             return;
         } else if (pass.matches("")) {
             txtErrorSign.setText(getString(R.string.error_pass));
@@ -109,6 +109,11 @@ public class FragmentSignUp extends Fragment {
             @Override
             public void onResponse(Call<ResponseRegister> call, Response<ResponseRegister> response) {
                 ResponseRegister responseRegister = response.body();
+                if (response.errorBody() != null) {
+                    ResponseErrorBody responseBody = new Gson().fromJson(response.errorBody().charStream(), ResponseErrorBody.class);
+                    txtErrorSign.setText(responseBody.getDetails());
+                    return;
+                }
                 if (responseRegister.getResult().equals("ok") && responseRegister.getInsertId() != 0) {
                     listenerLogin.backToLogin();
                     Toast.makeText(getContext(), "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
@@ -128,5 +133,9 @@ public class FragmentSignUp extends Fragment {
                 t.getCause();
             }
         });
+    }
+
+    public void getVerifyData() {
+
     }
 }

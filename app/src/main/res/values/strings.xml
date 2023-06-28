@@ -32,9 +32,9 @@
     <string name="preferences_apikey">preferences_apikey</string>
 
     <!--    errores-->
-    <string name="error_nick">El nick ya existe o no tiene un formato valido</string>
-    <string name="error_pass">La contraseña no tiene un formato valido</string>
-    <string name="error_email">El email ya existe o no tiene un formato valido</string>
+    <string name="error_nick">El nick no puede estar vacio</string>
+    <string name="error_pass">La contraseña no puede estar vacia</string>
+    <string name="error_email">El email no tiene un formato valido</string>
     <string name="email_exists">El email ya existe</string>
     <string name="register_error">Ha ocurrido algun problema</string>
 
