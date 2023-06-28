@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.tfglorenzo_mtgdeckbuilder.R;
 import com.example.tfglorenzo_mtgdeckbuilder.UserActivity;
-import com.example.tfglorenzo_mtgdeckbuilder.api.InterceptorRetrofit;
 import com.example.tfglorenzo_mtgdeckbuilder.api.ConexionRetrofitDeckbuilder;
 import com.example.tfglorenzo_mtgdeckbuilder.api.DockerLampApi;
 import com.example.tfglorenzo_mtgdeckbuilder.databinding.FragmentLoginBinding;
@@ -32,7 +31,6 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class FragmentLogin extends Fragment {
     private EditText txtEmail, txtPass;
@@ -55,9 +53,7 @@ public class FragmentLogin extends Fragment {
         super.onCreate(savedInstanceState);
         preferences = getActivity().getSharedPreferences(getString(R.string.userPreferences), Context.MODE_PRIVATE);
         conexionRetrofitDeckbuilder = new ConexionRetrofitDeckbuilder();
-//        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
-        Retrofit retrofit = InterceptorRetrofit.getClient();
-        dockerLampApi = retrofit.create(DockerLampApi.class);
+        dockerLampApi = conexionRetrofitDeckbuilder.getDockerLampApi();
     }
 
     @Override
